@@ -26,6 +26,9 @@ The dependencies listed below are **suggestions**. If you know
 of a library that clearly better than one that we have suggested,
 you are free to use it as long as you can justify yourself.
 
+- python 3
+  - this one is pretty much required. if you want to use python 2
+    you better have a REALLY good reason.
 - mongodb
     - You can choose any mongodb python drivers
 - [flask](http://flask.pocoo.org/) for your webserver
