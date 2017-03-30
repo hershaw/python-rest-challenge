@@ -47,42 +47,42 @@ Feature: Loan applications API
   client IT departments.
 
   Scenario: Add a new loan application
-    Given the webserver is running
+    Given the webserver is available
     And a valid application is generated
     When the endpoint POST /application is called
     Then the ID of the application is returned
     And the loan exists in the database
     
   Scenario: Attempt to add application with missing field
-    Given the webserver is running
+    Given the webserver is available
     And an application with age missing is generated
     When the endpoint POST /application is called
     Then an error message saying age is missing is returned
     And status 422 is returned
     
   Scenario: Attempt to add application with incorrect type
-    Given the webserver is running
+    Given the webserver is available
     And an application with age as a string is generated
     When the endpoint POST /application is called
     Then an error message saying age has wrong type is returned
     And status 422 is returned
 
   Scenario: Fetch an application by ID
-    Given the webserver is running
+    Given the webserver is available
     And an application exists in the database with id "1"
     When GET /application is called with the id of "1"
     Then the correct application is returned
     And status 200 is returned
     
   Scenario: Update an application by ID
-    Given the webserver is running
+    Given the webserver is available
     And an application exists in the database
     When PATCH /application is called to update a field
     Then the update is recorded in the database
     And status 200 is returned
     
   Scenario: Delete an application by ID
-    Given the webserver is running
+    Given the webserver is available
     And an application exists in the database
     When DELETE /application is called to delete a known application
     Then the application is no longer in the database
