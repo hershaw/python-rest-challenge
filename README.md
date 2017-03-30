@@ -102,7 +102,7 @@ does not have the correct types or keys is considered invalid.
 1. Fork this repo, take a branch, and write your code there
 1. Add me [hershaw](https://github.com/hershaw) as a collaborator
   and when you are ready to submit, issue a PR to master in your
-  own fork and I will review it.   
+  own fork and I will review it
       
 ## Submission
 
