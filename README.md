@@ -15,7 +15,7 @@ This challenge is meant to cover the following concepts
 - Have a database backing it
 - Provide documentation (via a README is enough)
 - Testing
-    - use behave
+    - use behave and sure
 - Git
     - Forks, PRs, code reviews.
 - pip
@@ -34,7 +34,8 @@ you are free to use it as long as you can justify yourself.
 - [flask](http://flask.pocoo.org/) for your webserver
     - For testing, use [test_client()](http://flask.pocoo.org/docs/0.12/testing/)
 - [webargs](https://webargs.readthedocs.io/en/latest/) for validation
-- [behave](http://pythonhosted.org/behave/) for testing
+- [behave](http://pythonhosted.org/behave/) for testing and
+  [sure](https://github.com/gabrielfalcao/sure) for assertions
 
 ## Assignment
 
