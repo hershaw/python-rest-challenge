@@ -111,5 +111,6 @@ The assignment is considered complete with the following conditions:
 1. there is a `pip-requirements.txt` file
 1. all tests pass
 1. you can start the webserver and make curl requests
+1. a comprehensive readme exists
 
 To submit, add me as a contributor to the repo and mention me in a comment so I recieve a notification and our team can review it.
