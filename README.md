@@ -104,10 +104,8 @@ does not have the correct types or keys is considered invalid.
 ```
 
 ## Implementation
-1. Fork this repo, take a branch, and write your code there
-1. Add me [hershaw](https://github.com/hershaw) as a collaborator
-  and when you are ready to submit, issue a PR to master in your
-  own fork and I will review it
+
+Fork this repo, take a branch, and write your code there
       
 ## Submission
 
@@ -118,4 +116,6 @@ The assignment is considered complete with the following conditions:
 1. you can start the webserver and make curl requests
 1. a comprehensive readme exists
 
-To submit, add me as a contributor to the repo and mention me in a comment so I recieve a notification and our team can review it.
+To submit, add me ([hershaw](https://github.com/hershaw)) as a contributor
+to the repo and mention me in a comment so I recieve a notification and our
+team can review it.
