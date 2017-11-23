@@ -1,121 +1,91 @@
-# Python challenge
+# The APP needs a MongoDB running to work.
 
-This code challenge will consist of you building a very simple
-REST api to keep track of loan applications. There is no frontend to this, its as simple as it sounds.
+The test are the original ones.
+I'll improve the documentation tomorrow with some analysis of the test and my impressions,
+or I could comment it live using Skype.
 
-If there are bugs or conceptual mistakes in the test itself, don't
-be shy about bringing them up. You get huge big bonus points for
-proactivity and critical thinking in general.
+## For running the tests from the shell:
+- go to "behave_tests" directory and run `behave`.
 
-## Concepts to cover
+## For running the app from the shell:
+- You can go to the app root directory and run `python src/flask_test.py`.
 
-This challenge is meant to cover the following concepts
+## Some important variables:
+- APP_DEBUG_MODE = False
+- APP_URL = "http://127.0.0.1:5000"
 
-- REST api implementation
-- Have a database backing it
-- Provide documentation (via a README is enough)
-- Testing
-    - use behave and sure
-- Git
-    - Forks, PRs, code reviews.
-- pip
+### For TESTING:
+APP_START_TIME = 8
 
-## Dependencies
+It's the time in seconds for the app before starting the tests.
+Consider increasing it if it fails.
 
-The dependencies listed below are **suggestions**. If you know
-of a library that clearly better than one that we have suggested,
-you are free to use it as long as you can justify yourself.
+### Notes
 
-- python 3
-  - this one is pretty much required. if you want to use python 2
-    you better have a REALLY good reason.
-- mongodb
-    - You can choose any mongodb python drivers
-- [flask](http://flask.pocoo.org/) for your webserver
-    - For testing, use [test_client()](http://flask.pocoo.org/docs/0.12/testing/)
-- [webargs](https://webargs.readthedocs.io/en/latest/) for validation
-- [behave](http://pythonhosted.org/behave/) for testing and
-  [sure](https://github.com/gabrielfalcao/sure) for assertions
+Behave is brilliant, I reuse many of the steps. Some more could be done though.
 
-## Assignment
+For testing I've used a real db connection instead of a mock object.
 
-You will take the following Gherkin requirements and implement
-and test a REST API that satisfies the expressed business needs.
 
-```
-Feature: Loan applications API
-  REST API for integration with loan application frontends built by
-  client IT departments.
+## Some useful notes for programs I used
+### MONGODB
+sudo apt-get install  mongodb
+mkdir -p /data/db
+mongod --dbpath /data/db
+mongod
+mongod --shutdown
 
-  Scenario: Add a new loan application
-    Given the webserver is available
-    And a valid application is generated
-    When the endpoint POST /application is called
-    Then the application is returned with an id
-    Then status 200 is returned
-    And the loan exists in the database
+### FLASK
+cd /home/pablo/src/tests/neovantas/python-rest-challenge/src
+export FLASK_DEBUG=1
+FLASK_APP=flask_test.py flask run
 
-  Scenario: Attempt to add application with missing field
-    Given the webserver is available
-    And an application with age missing is generated
-    When the endpoint POST /application is called
-    Then status 422 is returned
-    And an error message saying age is missing is returned
 
-  Scenario: Attempt to add application with incorrect type
-    Given the webserver is available
-    And an application with age as a string is generated
-    When the endpoint POST /application is called
-    Then status 422 is returned
-    And an error message saying age has wrong type is returned
+### VIRTUALENVWRAPPER
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/src/tests
+export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
+source /home/pablo/programs/anaconda3/bin/virtualenvwrapper.sh
+workon
+mkvirtualenv neo
+setvirtualenvproject /home/pablo/.virtualenvs/neo /home/pablo/src/tests/neovantas/python-rest-challenge
+workon neo
 
-  Scenario: Fetch an application by ID
-    Given the webserver is available
-    And an application exists in the database with id specialid
-    When GET /application/specialid is called
-    Then status 200 is returned
-    And the correct application is returned
+### BEHAVE
+behave --no-capture # print stdout
 
-  Scenario: Update an application by ID
-    Given the webserver is available
-    And an application exists in the database with id specialid
-    When PATCH /application/specialid is called to update age
-    Then status 200 is returned
-    And the updated age is recorded in the database
 
-  Scenario: Delete an application by ID
-    Given the webserver is available
-    And an application exists in the database with id specialid
-    When DELETE /application/specialid
-    Then status 200 is returned
-    And the application with id specialid is no longer in the database
+### PIP
 
-```
+**if there is any issue, check pip-requirements-full-freeze.txt**
 
-Applications must have the following types and keys. Anything that
-does not have the correct types or keys is considered invalid.
+pip (9.0.1)
+setuptools (36.7.2)
+wheel (0.30.0)
 
-```
-{
-  "age": <int>,
-  "income": <float>,
-  "employed": <boolean>
-}
-```
+pip install Flask
+Successfully installed Flask-0.12.2 Jinja2-2.10 MarkupSafe-1.0 Werkzeug-0.12.2 click-6.7 itsdangerous-0.24
 
-## Implementation
+pip install Flask-PyMongo
+Successfully installed Flask-PyMongo-0.5.1 PyMongo-3.5.1
 
-Fork this repo, take a branch, and write your code there
-      
-## Submission
+pip install Flask-RESTful
+Successfully installed Flask-RESTful-0.3.6 aniso8601-1.3.0 python-dateutil-2.6.1 pytz-2017.3 six-1.11.0
 
-The assignment is considered complete with the following conditions:
+pip install webargs
+Successfully installed marshmallow-2.14.0 webargs-1.8.1
 
-1. there is a `pip-requirements.txt` file
-1. all tests pass
-1. you can start the webserver and make curl requests
-1. a comprehensive readme exists
+### PIP for testing/developing
+pip install requests
+Successfully installed certifi-2017.11.5 chardet-3.0.4 idna-2.6 requests-2.18.4 urllib3-1.22
 
-To submit, add me ([hershaw](https://github.com/hershaw)) as a contributor
-to the repo and mention me in a comment so I recieve a notification and our
-team can review it.
+pip install ipdb
+Successfully installed decorator-4.1.2 ipdb-0.10.3 ipython-6.2.1 ipython-genutils-0.2.0 jedi-0.11.0 parso-0.1.0 pexpect-4.3.0 pickleshare-0.7.4 prompt-toolkit-1.0.15 ptyprocess-0.5.2 pygments-2.2.0 simplegeneric-0.8.1 traitlets-4.3.2 wcwidth-0.1.7
+
+pip install behave
+Successfully installed behave-1.2.5 parse-1.8.2 parse-type-0.4.2
+
+pip install sure
+Successfully installed mock-2.0.0 pbr-3.1.1 sure-1.4.7
+
+# THANK YOU :)

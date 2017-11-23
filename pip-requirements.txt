@@ -1,0 +1,11 @@
+Flask==0.12.2
+Flask-PyMongo==0.5.1
+Flask-RESTful==0.3.6
+webargs==1.8.1
+
+# For testing:
+requests==2.18.4
+ipdb==0.10.3
+behave==1.2.5
+sure==1.4.7
+
