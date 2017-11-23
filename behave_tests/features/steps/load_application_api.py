@@ -86,7 +86,7 @@ def step_impl(context):  # @DuplicatedSignature
                            "employed": "True"}
     context.response = requests.post(APPLICATION_URL, json=context.application)
     (context.response).shouldnt.be.equal(None)
-    context.specialid = context.response.json()
+    context.specialid = context.response.json()['id']
     (bson.objectid.ObjectId.is_valid(context.specialid)).should.be.equal(True)
 
 
@@ -125,7 +125,8 @@ def step_impl(context):  # @DuplicatedSignature
 @behave.then('the application is returned with an id')
 def step_impl(context):  # @DuplicatedSignature
     (context.response).shouldnt.be.equal(None)
-    (bson.objectid.ObjectId.is_valid(context.response.json())).should.be.equal(True)
+    application_id = context.response.json()['id']
+    (bson.objectid.ObjectId.is_valid(application_id)).should.be.equal(True)
 
 
 @behave.then('status {status_code:d} is returned')
@@ -135,7 +136,7 @@ def step_impl(context, status_code):  # @DuplicatedSignature
 
 @behave.then('the loan exists in the database')
 def step_impl(context):  # @DuplicatedSignature
-    response = requests.get(APPLICATION_URL + '/' + context.response.json())
+    response = requests.get(APPLICATION_URL + '/' + context.response.json()['id'])
     (response.json()['_id']).shouldnt.be.equal(None)
 
 

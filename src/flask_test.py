@@ -51,10 +51,6 @@ class Loan(flask_restful.Resource):
 
     mongo = None
 
-    @classmethod
-    def create_mongo(cls, app):
-        cls.mongo = flask_pymongo.PyMongo(app, config_prefix='MONGO')
-
     def get(self, loan_id):
         if not bson.objectid.ObjectId.is_valid(loan_id):
             return jsonifyBson({"message": "Invalid loan id."}), 422  # Unprocessable Entity
@@ -82,7 +78,8 @@ class Loan(flask_restful.Resource):
             return data, 405  # METHOD NOT ALLOWED
 #         data = flask.request.get_json()
         inserted_id = Loan.mongo.db.loan.insert_one(args)
-        return str(inserted_id.inserted_id)
+        args.update({'id': str(inserted_id.inserted_id)})
+        return jsonifyBson(args)
 
 
 class LoanList(flask_restful.Resource):
@@ -100,21 +97,19 @@ class LoanList(flask_restful.Resource):
         return jsonifyBson(data)
 
 
+def create_mongo(app):
+    return flask_pymongo.PyMongo(app, config_prefix='MONGO')
+
+
 def update_mongo_instance(app):
-    Loan.create_mongo(app)
-    LoanList.mongo = Loan.mongo
+    nongo = create_mongo(app)
+    Loan.mongo = nongo
+    LoanList.mongo = nongo
 
 
-if __name__ == '__main__':
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--dbname",
-                        help="Name of the MongoDB of the application.")
-    args = parser.parse_args()
-    loans_db_name = args.dbname if (args.dbname) else 'loans_db'
-
+def create_and_run_flask_app(db_name):
     app = flask.Flask(__name__)
-    app.config["MONGO_DBNAME"] = loans_db_name
+    app.config["MONGO_DBNAME"] = db_name
     update_mongo_instance(app)
     api = flask_restful.Api(app)
     api.add_resource(LoanList, "/", endpoint="loans_list")
@@ -137,3 +132,19 @@ if __name__ == '__main__':
         }), 422
 
     app.run(debug=APP_DEBUG_MODE)
+
+
+if __name__ == '__main__':
+    import argparse
+
+    def get_arguments():
+        parser = argparse.ArgumentParser()
+        parser.add_argument("--dbname",
+                            help="Name of the MongoDB of the application.")
+        return parser.parse_args()
+
+    args = get_arguments()
+    db_name = args.dbname if (args.dbname) else 'loans_db'
+
+    create_and_run_flask_app(db_name)
+

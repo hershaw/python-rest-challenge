@@ -1,21 +1,34 @@
 # The APP needs a MongoDB running to work.
 
-The test are the original ones.
-I'll improve the documentation tomorrow with some analysis of the test and my impressions,
-or I could comment it live using Skype.
+Please, let me know about any question you may have.
 
 ## For running the tests from the shell:
-- go to "behave_tests" directory and run `behave`.
+- go to "behave\_tests" directory and run `behave`.
 
 ## For running the app from the shell:
-- You can go to the app root directory and run `python src/flask_test.py`.
+- You can go to the app root directory and run `python src/flask\_test.py`.
 
 ## Some important variables:
-- APP_DEBUG_MODE = False
-- APP_URL = "http://127.0.0.1:5000"
+
+src/flask\_test.py
+- APP\_DEBUG\_MODE = False
+- APP\_URL = "http://127.0.0.1:5000"
+
+features/environment.py
+- BEHAVE\_DEBUG\_ON\_ERROR = False
+- DB\_HOST = 'localhost'
+- DB\_PORT = 27017
+- APP\_URL\_BASE = 'http://localhost:5000/'
+
+features/steps/load\_application\_api.py
+- TEST\_DB\_NAME = 'test\_db\_to\_be\_deleted\_' + get\_current\_file\_basename\_without\_extension(\_\_file\_\_)
+- APPLICATION\_URL = APP\_URL\_BASE + 'application'
+- APP\_START\_TIME = 8
+- APP\_SRC\_DIRECTORY = get\_app\_src\_directory()
+
 
 ### For TESTING:
-APP_START_TIME = 8
+APP\_START\_TIME = 8
 
 It's the time in seconds for the app before starting the tests.
 Consider increasing it if it fails.
@@ -25,7 +38,15 @@ Consider increasing it if it fails.
 Behave is brilliant, I reuse many of the steps. Some more could be done though.
 
 For testing I've used a real db connection instead of a mock object.
+I suppose that a standard way of testing it exists. 
 
+I used flask\_rest because I like the organization of HTTP methods in classes,
+I also like to have all the app url defined together.
+
+The test are the original ones.
+
+I found the challenge reasonable to be done with 5 hours if now the tecnologies involved.
+In my case I spent many time  setting up the environment and learning and combining them.
 
 ## Some useful notes for programs I used
 ### MONGODB
@@ -37,19 +58,20 @@ mongod --shutdown
 
 ### FLASK
 cd /home/pablo/src/tests/neovantas/python-rest-challenge/src
-export FLASK_DEBUG=1
-FLASK_APP=flask_test.py flask run
+export FLASK\_DEBUG=1
+FLASK\_APP=flask\_test.py flask run
 
 
 ### VIRTUALENVWRAPPER
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/src/tests
-export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
+export WORKON\_HOME=$HOME/.virtualenvs
+export PROJECT\_HOME=$HOME/src/tests
+export VIRTUALENVWRAPPER\_VIRTUALENV\_ARGS='--no-site-packages'
 source /home/pablo/programs/anaconda3/bin/virtualenvwrapper.sh
 workon
 mkvirtualenv neo
 setvirtualenvproject /home/pablo/.virtualenvs/neo /home/pablo/src/tests/neovantas/python-rest-challenge
 workon neo
+
 
 ### BEHAVE
 behave --no-capture # print stdout
@@ -90,4 +112,3 @@ Successfully installed mock-2.0.0 pbr-3.1.1 sure-1.4.7
 
 # THANK YOU :)
 
-@hershaw
