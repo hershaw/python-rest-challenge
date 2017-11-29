@@ -1,121 +1,114 @@
-# Python challenge
+# The APP needs a MongoDB running to work.
 
-This code challenge will consist of you building a very simple
-REST api to keep track of loan applications. There is no frontend to this, its as simple as it sounds.
+Please, let me know about any question you may have.
 
-If there are bugs or conceptual mistakes in the test itself, don't
-be shy about bringing them up. You get huge big bonus points for
-proactivity and critical thinking in general.
+## For running the tests from the shell:
+- go to "behave\_tests" directory and run `behave`.
 
-## Concepts to cover
+## For running the app from the shell:
+- You can go to the app root directory and run `python src/flask\_test.py`.
 
-This challenge is meant to cover the following concepts
+## Some important variables:
 
-- REST api implementation
-- Have a database backing it
-- Provide documentation (via a README is enough)
-- Testing
-    - use behave and sure
-- Git
-    - Forks, PRs, code reviews.
-- pip
+src/flask\_test.py
+- APP\_DEBUG\_MODE = False
+- APP\_URL = "http://127.0.0.1:5000"
 
-## Dependencies
+features/environment.py
+- BEHAVE\_DEBUG\_ON\_ERROR = False
+- DB\_HOST = 'localhost'
+- DB\_PORT = 27017
+- APP\_URL\_BASE = 'http://localhost:5000/'
 
-The dependencies listed below are **suggestions**. If you know
-of a library that clearly better than one that we have suggested,
-you are free to use it as long as you can justify yourself.
+features/steps/load\_application\_api.py
+- TEST\_DB\_NAME = 'test\_db\_to\_be\_deleted\_' + get\_current\_file\_basename\_without\_extension(\_\_file\_\_)
+- APPLICATION\_URL = APP\_URL\_BASE + 'application'
+- APP\_START\_TIME = 8
+- APP\_SRC\_DIRECTORY = get\_app\_src\_directory()
 
-- python 3
-  - this one is pretty much required. if you want to use python 2
-    you better have a REALLY good reason.
-- mongodb
-    - You can choose any mongodb python drivers
-- [flask](http://flask.pocoo.org/) for your webserver
-    - For testing, use [test_client()](http://flask.pocoo.org/docs/0.12/testing/)
-- [webargs](https://webargs.readthedocs.io/en/latest/) for validation
-- [behave](http://pythonhosted.org/behave/) for testing and
-  [sure](https://github.com/gabrielfalcao/sure) for assertions
 
-## Assignment
+### For TESTING:
+APP\_START\_TIME = 8
 
-You will take the following Gherkin requirements and implement
-and test a REST API that satisfies the expressed business needs.
+It's the time in seconds for the app before starting the tests.
+Consider increasing it if it fails.
 
-```
-Feature: Loan applications API
-  REST API for integration with loan application frontends built by
-  client IT departments.
+### Notes
 
-  Scenario: Add a new loan application
-    Given the webserver is available
-    And a valid application is generated
-    When the endpoint POST /application is called
-    Then the application is returned with an id
-    Then status 200 is returned
-    And the loan exists in the database
+Behave is brilliant, I reuse many of the steps. Some more could be done though.
 
-  Scenario: Attempt to add application with missing field
-    Given the webserver is available
-    And an application with age missing is generated
-    When the endpoint POST /application is called
-    Then status 422 is returned
-    And an error message saying age is missing is returned
+For testing I've used a real db connection instead of a mock object.
+I suppose that a standard way of testing it exists. 
 
-  Scenario: Attempt to add application with incorrect type
-    Given the webserver is available
-    And an application with age as a string is generated
-    When the endpoint POST /application is called
-    Then status 422 is returned
-    And an error message saying age has wrong type is returned
+I used flask\_rest because I like the organization of HTTP methods in classes,
+I also like to have all the app url defined together.
 
-  Scenario: Fetch an application by ID
-    Given the webserver is available
-    And an application exists in the database with id specialid
-    When GET /application/specialid is called
-    Then status 200 is returned
-    And the correct application is returned
+The test are the original ones.
 
-  Scenario: Update an application by ID
-    Given the webserver is available
-    And an application exists in the database with id specialid
-    When PATCH /application/specialid is called to update age
-    Then status 200 is returned
-    And the updated age is recorded in the database
+I found the challenge reasonable to be done with 5 hours if now the tecnologies involved.
+In my case I spent many time  setting up the environment and learning and combining them.
 
-  Scenario: Delete an application by ID
-    Given the webserver is available
-    And an application exists in the database with id specialid
-    When DELETE /application/specialid
-    Then status 200 is returned
-    And the application with id specialid is no longer in the database
+## Some useful notes for programs I used
+### MONGODB
+sudo apt-get install  mongodb
+mkdir -p /data/db
+mongod --dbpath /data/db
+mongod
+mongod --shutdown
 
-```
+### FLASK
+cd /home/pablo/src/tests/neovantas/python-rest-challenge/src
+export FLASK\_DEBUG=1
+FLASK\_APP=flask\_test.py flask run
 
-Applications must have the following types and keys. Anything that
-does not have the correct types or keys is considered invalid.
 
-```
-{
-  "age": <int>,
-  "income": <float>,
-  "employed": <boolean>
-}
-```
+### VIRTUALENVWRAPPER
+export WORKON\_HOME=$HOME/.virtualenvs
+export PROJECT\_HOME=$HOME/src/tests
+export VIRTUALENVWRAPPER\_VIRTUALENV\_ARGS='--no-site-packages'
+source /home/pablo/programs/anaconda3/bin/virtualenvwrapper.sh
+workon
+mkvirtualenv neo
+setvirtualenvproject /home/pablo/.virtualenvs/neo /home/pablo/src/tests/neovantas/python-rest-challenge
+workon neo
 
-## Implementation
 
-Fork this repo, take a branch, and write your code there
-      
-## Submission
+### BEHAVE
+behave --no-capture # print stdout
 
-The assignment is considered complete with the following conditions:
 
-1. there is a `pip-requirements.txt` file
-1. all tests pass
-1. you can start the webserver and make curl requests
-1. a comprehensive readme exists
+### PIP
 
-To submit, add me ([hershaw](https://github.com/hershaw)) as a contributor
-to the repo and mention me in a comment so I recieve a notification and our
-team can review it.
+**if there is any issue, check pip-requirements-full-freeze.txt**
+
+pip (9.0.1)
+setuptools (36.7.2)
+wheel (0.30.0)
+
+pip install Flask
+Successfully installed Flask-0.12.2 Jinja2-2.10 MarkupSafe-1.0 Werkzeug-0.12.2 click-6.7 itsdangerous-0.24
+
+pip install Flask-PyMongo
+Successfully installed Flask-PyMongo-0.5.1 PyMongo-3.5.1
+
+pip install Flask-RESTful
+Successfully installed Flask-RESTful-0.3.6 aniso8601-1.3.0 python-dateutil-2.6.1 pytz-2017.3 six-1.11.0
+
+pip install webargs
+Successfully installed marshmallow-2.14.0 webargs-1.8.1
+
+### PIP for testing/developing
+pip install requests
+Successfully installed certifi-2017.11.5 chardet-3.0.4 idna-2.6 requests-2.18.4 urllib3-1.22
+
+pip install ipdb
+Successfully installed decorator-4.1.2 ipdb-0.10.3 ipython-6.2.1 ipython-genutils-0.2.0 jedi-0.11.0 parso-0.1.0 pexpect-4.3.0 pickleshare-0.7.4 prompt-toolkit-1.0.15 ptyprocess-0.5.2 pygments-2.2.0 simplegeneric-0.8.1 traitlets-4.3.2 wcwidth-0.1.7
+
+pip install behave
+Successfully installed behave-1.2.5 parse-1.8.2 parse-type-0.4.2
+
+pip install sure
+Successfully installed mock-2.0.0 pbr-3.1.1 sure-1.4.7
+
+# THANK YOU :)
+
